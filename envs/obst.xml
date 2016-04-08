@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <fastsim>
-  <display enable="true"/>
+  <display enable="false"/>
 
   <!-- world -->
   <map name="envs/cuisine.pbm" size="600"/>
   <robot x="300" y="300" theta="0" diameter="30"/>
   <illuminated_switch x="150" y="50" color="0" radius="10" on="true"/>
   <goal x="100" y="100" color="0" diameter="10"/>
-  
+
   <!-- sensors (optionals) -->
-  <laser range="100" angle="-180"/>
-  <laser_scanner angle_min="-100" angle_max="100" angle_inc="1" range="3000"/>
-  <radar slices="4" color="0"/>
+  <!--<laser range="100" angle="-180"/>-->
+  <laser_scanner angle_min="-45" angle_max="45" angle_inc="45" range="3000"/>
+  <!--<radar slices="4" color="0"/>-->
 
 </fastsim>

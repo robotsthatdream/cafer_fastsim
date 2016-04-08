@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(fastsim)
+project(cafer_fastsim)
+
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -9,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf
   message_generation
+  cafer_core
 )
 
 ## System dependencies are found with CMake's conventions
@@ -93,10 +96,10 @@ catkin_package(
 ###########
 
 include_directories(
-  ${catkin_INCLUDE_DIRS} 
-  /usr/include/SDL 
+  ${catkin_INCLUDE_DIRS}
+  /usr/include/SDL
   $ENV{HOME}/git/libfastsim/src
 )
 link_directories($ENV{HOME}/git/libfastsim/build/src /usr/lib/i386-linux-gnu)
-add_executable(simu_fastsim src/fastsim.cpp)
-target_link_libraries(simu_fastsim ${catkin_LIBRARIES} fastsim SDL)
+add_executable(cafer_fastsim src/fastsim.cpp)
+target_link_libraries(cafer_fastsim ${catkin_LIBRARIES} fastsim SDL cafer_core)
