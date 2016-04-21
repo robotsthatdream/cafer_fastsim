@@ -39,9 +39,10 @@ using namespace fastsim;
 
 namespace fastsim {
 
-  CAFER_CLIENT(FastsimToCafer){
-    using AbstractClient::AbstractClient; // C++11 requirement to inherit the constructor
+  class FastsimToCafer : public cafer_core::Component {
+    using cafer_core::Component::Component; // To inherit Component's constructor
     
+
   // ROS handles
   boost::shared_ptr<ros::Subscriber> speed_left_s;
   boost::shared_ptr<ros::Subscriber> speed_right_s;
@@ -108,14 +109,10 @@ public:
 
 
     connect_to_ros();
-    initialized=true;
+    _is_init=true;
   }
 
-  bool is_initialized() {
-    return initialized;
-  }
-
-  void connect_to_ros(void) {
+  void client_connect_to_ros(void) {
     left_bumper_p.reset(new ros::Publisher(cafer_core::ros_nh->advertise<std_msgs::Bool>("left_bumper",10)));
     right_bumper_p.reset(new ros::Publisher(cafer_core::ros_nh->advertise<std_msgs::Bool>("right_bumper",10)));
     collision_p.reset(new ros::Publisher(cafer_core::ros_nh->advertise<std_msgs::Bool>("collision",10)));
@@ -137,7 +134,7 @@ public:
 
   }
 
-  void disconnect_from_ros(void) {
+  void client_disconnect_from_ros(void) {
     speed_left_s.reset();
     speed_right_s.reset();
 
@@ -432,11 +429,11 @@ int main(int argc, char **argv) {
   cafer_core::init(argc,argv,"fastsim");
   std::string mgmt_topic;
   cafer_core::ros_nh->param("management_topic", mgmt_topic, std::string("fastsim_mgmt"));
-  cafer_core::Component<fastsim::FastsimToCafer> cafer(mgmt_topic,"fastsim");
+  fastsim::FastsimToCafer cafer(mgmt_topic,"fastsim");
   //cafer.get_client().init();
   //cafer.ack_creation();
   while (ros::ok()) {
-    cafer.get_client().update();
+    cafer.update();
     cafer.spin();
     cafer.sleep();
   }
