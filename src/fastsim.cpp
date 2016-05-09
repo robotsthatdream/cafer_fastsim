@@ -75,7 +75,6 @@ namespace fastsim {
 
   ros::Time sim_time;
   float sim_dt;
-  bool initialized=false;
 
 public:
 
@@ -430,13 +429,13 @@ int main(int argc, char **argv) {
   std::string mgmt_topic;
   cafer_core::ros_nh->param("management_topic", mgmt_topic, std::string("fastsim_mgmt"));
   fastsim::FastsimToCafer cafer(mgmt_topic,"fastsim");
-  //cafer.get_client().init();
-  //cafer.ack_creation();
-  while (ros::ok()) {
+  cafer.wait_for_init();
+  while (ros::ok()&&!cafer.get_terminate()) {
     cafer.update();
     cafer.spin();
     cafer.sleep();
   }
-
+  if (cafer.get_terminate())
+    cafer.disconnect_from_ros();
   return 0;
 }
